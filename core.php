@@ -44,7 +44,7 @@ if($_SERVER["REQUEST_METHOD"] === 'POST' && isset( $_POST['action'])) {
     } 
     if ($_POST['action'] === 'fire'){
         $stmt = $pdo -> prepare("UPDATE sotrudnik SET status = false, data_uvolneniya = CURRENT_DATE WHERE id_sotrudnik = ?");
-        $stmt -> execute([$_POST['ID']]);
+        $stmt -> execute([$_POST['id']]);
     }
 
     header("Location: index.php");

@@ -4,13 +4,33 @@
 <head>
     <meta charset = "UTF-8">
     <title>Учет сотрудников</title>
-    <link rel="sttylesheet" href="style.css">
+    <style>
+        :root { --main-pink: #ff85a2; --bg-pink: #fff0f3; --dark: #4a3a3d;}
+        body {font-family: 'Segoe UI', sans-serif; background: #fff; color: var(--dark); margin:0; padding: 40px;}
+        h1 { color: var(--main-pink); font-weight: 300; letter-spacing: 2px;}
+        
+        .controls { display:flex; gap: 15px; background: var(--bg-pink); padding: 20px; border-radius: 15px; margin-bottom: 30px;}
+        input, select { padding: 10px; border: 1px solid #ffccd5; border-radius: 8px; outline: none;}
+        
+        .btn-primary { background: var(--main-pink); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; text-decoration: none; display:inline-block;}
+        .btn-more { border: 1px solid var(--main-pink); color: var(--main-pink); padding: 5px 15px; border-radius: 15px; text-decoration: none; font-size: 14px;}
+        
+        table{ width: 100%; border-collapse: collapse; margin-top: 20px;}
+        th { text-align: left; border-bottom: 2 px solid var(--bg-pink);padding: 15px; color: var(--main-pink);}
+        td { padding: 15px;  border-bottom: 1 px solid var(--bg-pink);}
+        .fired { background: #f9f9f9; opacity: 0.6;}
+        .fired td { text-decoration: line-through;}
+        
+        .modal-overlay {position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; justify-content: center; align-items: center;}
+        .modal-overlay.active {display: flex;}
+        .modal-card { background: white; padding: 30px; border-radius: 20px; width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);}
+        .modal-card input {width: 100%; margin-bottom: 10px; box-sizing: border-box;}
+    </style>
 </head>
-
 <body>
 
     <header style="display: flex; justify-content: space-between; align-items: center;">
-        <h1>Сотрудник</h1>
+        <h1>Сотрудники</h1>
         <a href = "?action=add" class="btn-primary">Добавить сотрудника</a>
         </header>
     <form class="controls" method = "GET" action = "index.php">
@@ -62,7 +82,7 @@
             <td style="text-align: right">
                 <a href="?view_id=<?= $emp['id_sotrudnik'] ?>" class="btn-more">Подробнее</a>
                 <?php if ($emp['status']): ?>
-                    <a href="?edit_id= <?= $emp['id_sotrudnik'] ?>" class="btn-more" style="border-color: beige; color: beige">Редактировать</a>
+                    <a href="?edit_id= <?= $emp['id_sotrudnik'] ?>" class="btn-more" style="border-color: #4a3a3d; color: #4a3a3d">✎</a>
                 <?php endif; ?>
             </td>
         </tr>
@@ -71,7 +91,7 @@
         </tbody>
     </table>
     <?php if ($current_emp): ?>
-    <div class="modak-overlay active">
+    <div class="modal-overlay active">
         <div class="modal-card">
             <h2><?= htmlspecialchars($current_emp['familiya'] . ' ' . $current_emp['imya']) ?></h2>
             <p><strong>Паспорт:</strong> <?= htmlspecialchars($current_emp['seriya_pasport'] . ' ' . $current_emp['nomer_pasport']) ?></p>
@@ -113,7 +133,7 @@
                     </select>
                     <select name="id_doljnosti" id="pos_select" required style="width: 100%; margin-bottom: 10px">
                         <option value="">-- Сначала выберите отдел --</option>
-                        <?php foreach($all_position as $p): ?>
+                        <?php foreach($all_positions as $p): ?>
                             <option value="<?= $p['id'] ?>" data-dept="<?= $p['id_otdela'] ?>">
                                 <?= htmlspecialchars($p['name']) ?> 
                             </option>
