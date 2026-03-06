@@ -128,5 +128,42 @@
             </div>
         </div>
         <?php endif; ?>
+    <?php if ($edit_emp): ?>
+        <div class="modal-overlay active">
+            <div class="modal-card">
+                <h2>Редактировать данные</h2>
+                <form method="POST">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id_sotrudnik" value="<?= $edit_emp['id_sotrudnik'] ?>">
+                    <input type="text" name="familiya" value="<?= htmlspecialchars($edit_emp['familiya']) ?>" required>
+                    <input type="text" name="imya" value="<?= htmlspecialchars($edit_emp['imya']) ?>" required>
+                    <input type="text" name="otchestvo" value="<?= htmlspecialchars($edit_emp['otchestvo']) ?>" >
+                    <select name="id_otdela" id="dept_select_edit" required style="width: 100%; margin-bottom: 10px;">
+                        <?php foreach($all_depts as $d): ?>
+                            <option value="<?= $d['id'] ?>" <?= $edit_emp['id_otdela'] == $d['id'] ? 'selected' : ''?>>
+                                <?= htmlspecialchars($d['name']) ?> 
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select name="id_doljnosti" id="pos_select_edit" required style="width: 100%; margin-bottom: 10px;">
+                        <?php foreach($all_positions as $p): ?>
+                            <option value="<?= $p['id'] ?>" data-dept="<?= $p['id_otdela'] ?>" <?= $edit_emp['id_doljnosti'] == $p['id'] ? 'selected' : ''?>>
+                                <?= htmlspecialchars($p['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="date" name="data_rojdeniya" value="<?= $edit_emp['data_rojdeniya'] ?>" required>
+                    <input type="text" name="nomer_telefona" value="<?= $edit_emp['nomer_telefona'] ?>" required>
+                    <input type="email" name="email" value="<?= $str_replace(['{','}'], '', $edit_emp['email']) ?>" required>
+                    <input type="number" name="zarplata" value="<?= $edit_emp['zarplata'] ?>" required>
+                    <input type="date" name="data_priema" value="<?= $edit_emp['data_priema'] ?>" required>
+                    <div style="margin-top: 10px;">
+                        <button type="submit" class="btn-primary">Обновить</button>
+                        <a href="index.php" style="margin-left: 15px; color: #999;">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <?php endif; ?>
 </body>
 </html>
