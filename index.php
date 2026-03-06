@@ -170,28 +170,53 @@
             </div>
         </div>
         <?php endif; ?>
-        <script>
-            document.addEventListener('input', function (e){
-                if (e.target.name === 'nomer_telefona') {
-                    let matrix = "+7 (___) ___-__-__",
-                        i = 0,
-                        def = matrix.replace(/\D/g, ""),
-                        val = e.target.value.replace(/\D/g, "");
-                    if (def.length >= val.length) val = def;
-                    e.target.value = matrix.replace(/./g, function(a) {
-                        return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a
-                    })
+<script>
+    document.addEventListener('input', function (e){
+        if (e.target.name === 'nomer_telefona') {
+            let matrix = "+7 (___) ___-__-__",
+                i = 0,
+                def = matrix.replace(/\D/g, ""),
+                val = e.target.value.replace(/\D/g, "");
+            if (def.length >= val.length) val = def;
+            e.target.value = matrix.replace(/./g, function(a) {
+                return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a
+            });
+        }
+        if (e.target.name === 'seriya_pasport') {
+            let val = e.target.value.replace(/\D/g, '');
+            e.target.value = val.substring(0,4);
+        }
+        if (e.target.name === 'nomer_pasport') {
+            let val = e.target.value.replace(/\D/g, '');
+            e.target.value = val.substring(0,6);
+        }
+    });
+</script>
+<script>
+    function setupLinkedSelects(deptId, posId) {
+        const dept = document.getElementById(deptId);
+        const pos = document.getElementById(posId);
+        if (!dept || !pos) return;
+        const allOptions =Array.from(pos.options);
+        dept.addEventListener('change', function() {
+            const val = this.value;
+            pos.value = "";
+            allOptions.forEach(opt => {
+                if (opt.value === "") return;
+                const deptIdOfPos = opt.getAttribute('data-dept');
+                if (val === "" || deptIdOfPos === val) {
+                    opt.style.display = 'block';
+                    opt. disabled = false;
+                } else {
+                    opt.style.display = 'none';
+                    opt. disabled = true;
                 }
-                if (e.target.name === 'seriya_pasport') {
-                    let val = e.target.value.replace(/\D/g, '');
-                    e.target.value = val.substring(0,4);
-                }
-                if (e.target.name === 'nomer_pasport') {
-                    let val = e.target.value.replace(/\D/g, '');
-                    e.target.value = val.substring(0,6);
-                }
-            })
-        </script>
-        
+            });
+        });
+    }
+    setupLinkedSelects('filter_dept', 'filter_pos');
+    setupLinkedSelects('dept_select', 'pos_select');
+    setupLinkedSelects('dept_select_edit', 'pos_select_edit');
+</script>
 </body>
 </html>
