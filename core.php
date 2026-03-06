@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] === 'POST' && isset( $_POST['action'])) {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true)";
         $pdo -> prepare($sql) -> execute([
             $_POST['familiya'], $_POST['imya'], $_POST['otchestvo'], $_POST['data_rojdeniya'],
-            $_POST['seriya'], $_POST['nomer'], $_POST['nomer_telefona'], $email_array,
+            $_POST['seriya_pasport'], $_POST['nomer_pasport'], $_POST['nomer_telefona'], $email_array,
             $_POST['adres'] ?? '', $_POST['id_otdela'], $_POST['id_doljnosti'], $_POST['zarplata'], $_POST['data_priema'],
 
         ]);
@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] === 'POST' && isset( $_POST['action'])) {
                 WHERE id_sotrudnik = ?";
         $pdo -> prepare( $sql) -> execute([
             $_POST['familiya'], $_POST['imya'], $_POST['otchestvo'], $_POST['data_rojdeniya'],
-            $_POST['seriya'], $_POST['nomer'], $_POST['nomer_telefona'],
+            $_POST['seriya_pasport'], $_POST['nomer_pasport'], $_POST['nomer_telefona'],
             $email_array, $_POST['adres'], $_POST['id_otdela'],
             $_POST['id_doljnosti'], $_POST['zarplata'], $_POST['data_priema'],
             $_POST['id_sotrudnik']

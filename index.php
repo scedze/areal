@@ -74,6 +74,7 @@
     <div class="modak-overlay active">
         <div class="modal-card">
             <h2><?= htmlspecialchars($current_emp['familiya'] . ' ' . $current_emp['imya']) ?></h2>
+            <p><strong>Паспорт:</strong> <?= htmlspecialchars($current_emp['seriya_pasport'] . ' ' . $current_emp['nomer_pasport']) ?></p>
             <p><strong>Почта:</strong><?= str_replace(['{','}'], '', $current_emp['email']) ?></p>
             <p><strong>Телефон:</strong><?= $current_emp['nomer_telefona'] ?></p>
             <p><strong>Зарплата:</strong><?= number_format($current_emp['zarplata'], 0, '.', ' ') ?>руб.</p>
@@ -102,6 +103,8 @@
                     <input type="text" name="familiya" placeholder="Фамилия" required>
                     <input type="text" name="imya" placeholder="Имя" required>
                     <input type="text" name="otchestvo" placeholder="Отчество">
+                    <input type="text" name="seriya_pasport" placeholder="Серия паспорта" required>
+                    <input type="text" name="nomer_pasport" placeholder="Номер паспорта" required>
                     <select name="id_otdela" id="dept_select" required style="width: 100%; margin-bottom: 10px">
                         <option value="">-- Выберите отдел --</option>
                         <?php foreach($all_depts as $d): ?>
@@ -138,6 +141,8 @@
                     <input type="text" name="familiya" value="<?= htmlspecialchars($edit_emp['familiya']) ?>" required>
                     <input type="text" name="imya" value="<?= htmlspecialchars($edit_emp['imya']) ?>" required>
                     <input type="text" name="otchestvo" value="<?= htmlspecialchars($edit_emp['otchestvo']) ?>" >
+                    <input type="text" name="seriya_pasport" value="<?= htmlspecialchars($edit_emp['seriya_pasport']) ?>" placeholder="Серия" required>
+                    <input type="text" name="nomer_pasport" value="<?= htmlspecialchars($edit_emp['nomer_pasport']) ?>" placeholder="Номер" required>
                     <select name="id_otdela" id="dept_select_edit" required style="width: 100%; margin-bottom: 10px;">
                         <?php foreach($all_depts as $d): ?>
                             <option value="<?= $d['id'] ?>" <?= $edit_emp['id_otdela'] == $d['id'] ? 'selected' : ''?>>
@@ -154,7 +159,7 @@
                     </select>
                     <input type="date" name="data_rojdeniya" value="<?= $edit_emp['data_rojdeniya'] ?>" required>
                     <input type="text" name="nomer_telefona" value="<?= $edit_emp['nomer_telefona'] ?>" required>
-                    <input type="email" name="email" value="<?= $str_replace(['{','}'], '', $edit_emp['email']) ?>" required>
+                    <input type="email" name="email" value="<?= str_replace(['{','}'], '', $edit_emp['email']) ?>" required>
                     <input type="number" name="zarplata" value="<?= $edit_emp['zarplata'] ?>" required>
                     <input type="date" name="data_priema" value="<?= $edit_emp['data_priema'] ?>" required>
                     <div style="margin-top: 10px;">
@@ -165,5 +170,28 @@
             </div>
         </div>
         <?php endif; ?>
+        <script>
+            document.addEventListener('input', function (e){
+                if (e.target.name === 'nomer_telefona') {
+                    let matrix = "+7 (___) ___-__-__",
+                        i = 0,
+                        def = matrix.replace(/\D/g, ""),
+                        val = e.target.value.replace(/\D/g, "");
+                    if (def.length >= val.length) val = def;
+                    e.target.value = matrix.replace(/./g, function(a) {
+                        return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a
+                    })
+                }
+                if (e.target.name === 'seriya_pasport') {
+                    let val = e.target.value.replace(/\D/g, '');
+                    e.target.value = val.substring(0,4);
+                }
+                if (e.target.name === 'nomer_pasport') {
+                    let val = e.target.value.replace(/\D/g, '');
+                    e.target.value = val.substring(0,6);
+                }
+            })
+        </script>
+        
 </body>
 </html>
