@@ -38,5 +38,38 @@
 
         <button type = "submit" class = "btn-primary">Применить</button>
     </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Отдел / Должность</th>
+                <th>Статус</th>
+                <th style="text-align: right">Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($employees as $emp): ?>
+        <tr class="<?=  !$emp['status'] ? 'fired' : '' ?>">
+            <td><?= htmlspecialchars($emp['familiya'] . ' ' . $emp['imya']) ?></td>
+            <td><?= htmlspecialchars($emp['dept_name'] . ' / ' . $emp['pos_name']) ?></td>
+            <td>
+                <?php if ($emp['status']): ?>
+                    <span style="color: pink">Работает</span>
+                <?php else: ?>
+                    <span style="color:darkgray; font-weight: bold;">УВОЛЕН</span>
+                <?php endif; ?>
+            </td>
+            <td style="text-align: right">
+                <a href="?view_id=<?= $emp['id_sotrudnik'] ?>" class="btn-more">Подробнее</a>
+                <?php if ($emp['status']): ?>
+                    <a href="?edit_id= <?= $emp['id_sotrudnik'] ?>" class="btn-more" style="border-color: beige; color: beige">Редактировать</a>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+
+        </tbody>
+    </table>
+    
 </body>
 </html>
